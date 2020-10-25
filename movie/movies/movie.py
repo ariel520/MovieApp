@@ -1,14 +1,14 @@
 from flask import *
 from werkzeug.security import check_password_hash
 
-from adapters import *
-from adapters.repo import *
-from adapters import repo
-from movies.model import *
+from movie.adapters import *
+from movie.adapters.repo import *
+from movie.adapters import repo
+from movie.movies.model import *
 import sys
 
 sys.path.append('../')
-from app import *
+from movie.app import *
 
 movie_bp = Blueprint(
     'movie_bp', __name__)

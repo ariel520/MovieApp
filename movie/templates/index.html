@@ -44,7 +44,7 @@
         {#    <h2 id="nav-header">#}
         {#        {% if 'username' in session %} Hello, {{ session['username'] }} {% endif %}#}
         {#    </h2>#}
-        <a class="btn-nav" href="{{ url_for("index") }}">Home</a>
+        <a class="btn-nav" href="{{ url_for("home_bp.index") }}">Home</a>
         {% if user!=None %}
             <a class="btn-nav" href="{{ url_for('user_bp.profile',username=user.username) }}">Profile</a>
             <a class="btn-nav" href="{{ url_for("watchlist_bp.watchlist") }}">Watch List</a>

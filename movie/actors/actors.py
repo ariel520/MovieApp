@@ -1,13 +1,13 @@
 from flask import *
 from werkzeug.security import check_password_hash
 
-from adapters import *
-from adapters.repo import *
-from adapters import repo
+from movie.adapters import *
+from movie.adapters.repo import *
+from movie.adapters import repo
 import sys
 
 sys.path.append('../')
-from app import *
+from movie.app import *
 
 actor_bp = Blueprint(
     'actor_bp', __name__)

@@ -2,13 +2,13 @@ from flask import *
 from werkzeug.security import check_password_hash
 from werkzeug.utils import secure_filename
 
-from adapters import *
-from adapters.repo import *
-from adapters import repo
+from movie.adapters import *
+from movie.adapters.repo import *
+from movie.adapters import repo
 import sys
 
 sys.path.append('../')
-from app import *
+from movie.app import *
 
 user_bp = Blueprint(
     'user_bp', __name__)
@@ -31,7 +31,7 @@ def login():
             return redirect(url_for('user_bp.login'))
         session['username'] = username
 
-        return redirect(url_for('index'))
+        return redirect(url_for('home_bp.index'))
 
 
 @user_bp.route('/register', methods=['GET', 'POST'])
@@ -56,7 +56,7 @@ def register():
 @user_bp.route('/logout')
 def logout():
     session.clear()
-    return redirect(url_for('index'))
+    return redirect(url_for('home_bp.index'))
 
 
 @user_bp.route('/username%<username>', methods=['GET', 'POST'])

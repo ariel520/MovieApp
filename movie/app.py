@@ -1,36 +1,21 @@
 from flask import *
 
-from movies.model import MovieFileCSVReader
-from user import *
+from .movies.model import MovieFileCSVReader
+from .user import *
 import config
-from adapters.repo import *
-from movies.movie import *
-from actors.actors import *
-from adapters import repo
-from watchlist.watchlist import *
-from directors.directors import *
-from movies import movie, model
-from user.__init__ import *
+from .adapters.repo import *
+from .movies.movie import *
+from .actors.actors import *
+from .adapters import repo
+from .watchlist.watchlist import *
+from .directors.directors import *
+from .movies import movie, model
+from .user.__init__ import *
+from .home.home import *
 
 
-app = Flask(__name__)
-app.config.from_object(config)
-app.register_blueprint(user_bp)
-app.register_blueprint(movie_bp)
-app.register_blueprint(actor_bp)
-app.register_blueprint(watchlist_bp)
-app.register_blueprint(director_bp)
-repo.repo_instance = MemoryRepo()
 
 
-@app.route('/')
-def index():
-    user = None
-    username = session.get('username')
-    for u in repo.repo_instance._users:
-        if u.username == username:
-            user = u
-    return render_template('index.html', user=user)
 
 
 def init_data():
@@ -41,8 +26,18 @@ def init_data():
     repo.repo_instance._genres = csv.dataset_of_genres
     repo.repo_instance._directors = csv.dataset_of_directors
 
+def create_app():
+    app =Flask(__name__)
+    app.config.from_object(config)
+    app.register_blueprint(home_bp)
+    app.register_blueprint(user_bp)
+    app.register_blueprint(movie_bp)
+    app.register_blueprint(actor_bp)
+    app.register_blueprint(watchlist_bp)
+    app.register_blueprint(director_bp)
 
-init_data()
+    repo.repo_instance = MemoryRepo()
 
-if __name__ == '__main__':
-    app.run()
+    init_data()
+
+    return app

@@ -1,7 +1,7 @@
 import csv
 import os
 from datetime import date, datetime
-from user.user import *
+from movie.user.user import *
 from typing import List
 
 from bisect import bisect, bisect_left, insort_left
