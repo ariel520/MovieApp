@@ -1,0 +1,36 @@
+{% extends'index.html' %}
+{% block CONTAINER %}
+    <div class="container">
+        <div class="row">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Watch List</h3>
+                </div>
+                <div class="panel-body">
+                    <p><b>TOTAL RUN TIME:</b> {{ user.time_spent_watching_movies_minutes }} Minutes</p>
+                    <table class="table table-striped">
+                        <tr>
+                            <td></td>
+                            <td><b>Movie</b></td>
+                            <td><b>Release Year</b></td>
+                            <td><b>Description</b></td>
+                            <td></td>
+                        </tr>
+                        {% for m in watchlist %}
+                            <tr>
+                                <td><img src="static/img/universal.jpg" style="width: 50px;height: 80px"/></td>
+                                <td>{{ m.title }}</td>
+                                <td>{{ m.release_year }}</td>
+                                <td>{{ m.description }}</td>
+                                <td><a href="{{ url_for('watchlist_bp.delete_movie_from_list',movie_title=m.title) }}" type="button" class="btn btn-danger">X</a></td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}

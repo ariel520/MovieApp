@@ -1,0 +1,121 @@
+{% extends'index.html' %}
+{% block CONTAINER %}
+    <div class="container" style="width: 100%">
+        <div class="row">
+            <div class="jumbotron" style="width: 100%;background-image:url('static/img/back.jpg')">
+                <div class="container">
+                    {% if user==None %}
+                        <h1 style="color: white">Hello!</h1>
+                        <p style="color: white">Welcome to movie application.</p>
+                        <p><a class="btn btn-primary btn-lg" href="{{ url_for('user_bp.login') }}" role="button">Login
+                            Now!</a></p>
+                    {% else %}
+                        <h1 style="color: white">Hello, {{ user.username }}!</h1>
+                        <p style="color: white">Actor Details</p>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="panel">
+                <div class="media">
+                    <div class="media-left">
+                        <a href="#">
+                            <img class="media-object" src="static/img/actor.jpg"
+                                 style="width: 300px; height: 500px">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <div class="page-header">
+                            <h1 style="color:#02032d">{{ actor.actor_full_name }}</h1>
+                        </div>
+                        <div><p><b style="color:#02032d; font-size: large">Review</b>
+                            {% if user!=None %}
+                                <div class="panel-default" style="background: lightgrey;width: 60%">
+                                    <div class="panel-body">
+                                        <form method="post">
+                                            <div class="form-group" style="width:80%">
+                                        <textarea class="form-control" rows="3" value="Your Review"
+                                                  name="review"></textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="rating" class="col-sm-3 control-label">Rating</label>
+                                                <select id='rating' class="form-control" style="width:100px"
+                                                        name="rating">
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                    <option value="6">6</option>
+                                                    <option value="7">7</option>
+                                                    <option value="8">8</option>
+                                                    <option value="9">9</option>
+                                                    <option value="10">10</option>
+                                                </select>
+                                                <button class="btn btn-primary" type="submit">Upload</button>
+
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div class="alert alert-info">
+                                    If you want to post a comment, log in first!
+                                </div>
+                            {% endif %}
+                            {% for r in reviews %}
+                                <hr>
+                                <media>
+                                    <div class="media-left">
+                                        <img class="media-object" class="img-circle"
+                                             src="{{ r.user.profile_pic }}"
+                                             style="width: 100px">
+                                    </div>
+                                    <div class="media-body">
+                                        <div class="media-heading">
+                                            {{ r.user.username }} <span class="badge">{{ r.rating }}</span>
+                                        </div>
+                                        {{ r.review_text }}
+                                        <br>
+                                        <br>
+                                        <code>{{ r.timestamp }}</code>
+
+                                    </div>
+                                </media>
+                            {% endfor %}
+                        </div>
+                        <blockquote>
+                            <p><b style="color:#02032d">To Produce: </b></p>
+                            {% for m in play_movies %}
+                                <div class="col-md-4">
+                                    <div class="thumbnail" style="width: 300px; height: 400px">
+                                        <img src="static/img/universal.jpg" alt="...">
+                                        <div class="caption">
+                                            <h3>{{ m.title }}</h3>
+                                            <p>{{ m.release_year }}</p>
+                                            <p><a href="{{ url_for('movie_bp.movies_detail',movietitle=m.title) }}"
+                                                  class="btn btn-primary" role="button">Details</a>
+                                                {% if user!=None %}
+                                                    {% if m not in user.watched_movies %}
+                                                        <a href="{{ url_for('watchlist_bp.add_to_watch_list',title=m.title) }}"
+                                                           class="btn btn-default" role="button">Add To Watchlist</a>
+                                                    {% endif %}
+                                                {% endif %}
+
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </blockquote>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}

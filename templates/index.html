@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Movies App</title>
+    <script type="text/javascript" src="static/js/bootstrap.js"></script>
+    <script type="text/javascript" src="static/js/jQuery.js"></script>
+    <script type="text/javascript" src="static/js/npm.js"></script>
+    <link href="static/css/bootstrap.css" rel="stylesheet">
+    <link href="static/css/bootstrap-theme.css" rel="stylesheet">
+    <link href="static/css/root.css" rel="stylesheet">
+</head>
+<body>
+<!-- START NAV -->
+
+{% block NAV %}
+    <nav id="nav">
+        <div style="text-align: center;color: white"><h1><b>Movie App</b></h1></div>
+        {% block login %}
+            {% if user==None %}
+                <div class="nav-login-reg">
+                    <p>
+                        <a href="{{ url_for('user_bp.login') }}">Login</a> | <a
+                            href="{{ url_for('user_bp.register') }}">Register</a>
+                    </p>
+                </div>
+            {% else %}
+                <div style="text-align: center">
+                    <a href="{{ url_for('user_bp.profile',username=user.username) }}"><img id="logo" class="img-circle"
+                                                                                           src="{{ user.profile_pic }}"/></a>
+                </div>
+
+                <div class="nav-profile-username">
+                    <b>{{ user.username }}</b>
+                </div>
+                <div class="nav-profile-logout">
+                    <a href="{{ url_for('user_bp.logout') }}" class="btn btn-link">Log Out</a>
+                </div>
+            {% endif %}
+        {% endblock %}
+
+        <br>
+
+        {#    <h2 id="nav-header">#}
+        {#        {% if 'username' in session %} Hello, {{ session['username'] }} {% endif %}#}
+        {#    </h2>#}
+        <a class="btn-nav" href="{{ url_for("index") }}">Home</a>
+        {% if user!=None %}
+            <a class="btn-nav" href="{{ url_for('user_bp.profile',username=user.username) }}">Profile</a>
+            <a class="btn-nav" href="{{ url_for("watchlist_bp.watchlist") }}">Watch List</a>
+        {% endif %}
+        <a class="btn-nav" href="{{ url_for("movie_bp.movies",genre='All') }}">Movies</a>
+        <a class="btn-nav" href="{{ url_for("actor_bp.actors") }}">Actors</a>
+        <a class="btn-nav" href="{{ url_for("director_bp.directors") }}">Directors</a>
+
+
+    </nav>
+    <!-- END NAV -->
+{% endblock %}
+
+<div class="content-body">
+    {% block CONTAINER %}
+        <!-- START CONTAINER-->
+        <div class="container" style="width: 100%">
+            <div class="row">
+
+                <div class="jumbotron" style="width: 100%;background-image:url('static/img/back.jpg')">
+                    <div class="container">
+                        {% if user==None %}
+                            <h1 style="color: white">Hello!</h1>
+                            <p style="color: white">Welcome to movie application.</p>
+                            <p><a class="btn btn-primary btn-lg" href="{{ url_for('user_bp.login') }}" role="button">Login
+                                Now!</a></p>
+                        {% else %}
+                            <h1 style="color: white">Hello, {{ user.username }}!</h1>
+                            <p style="color: white">Welcome back.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="page-header">
+                            <h1>COMING SOON<small> Mulan, 2020</small></h1>
+                        </div>
+                        <iframe width="910" height="378" src="https://www.youtube.com/embed/KK8FHdFluOQ" frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- END CONTAINER-->
+    {% endblock %}
+</div>
+
+
+</body>
+</html>
+

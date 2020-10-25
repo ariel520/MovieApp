@@ -1,0 +1,81 @@
+{% extends'index.html' %}
+{% block CONTAINER %}
+    <div class="container" style="width: 100%">
+        <div class="row">
+            <div class="jumbotron" style="width: 100%;background-image:url('static/img/back.jpg')">
+                <div class="container">
+                    {% if user==None %}
+                        {% if genre=='All' %}
+                            <h1 style="color: white">All Movies</h1>
+                        {% else %}
+                            <h1 style="color: white">{{ genre.genre_name }} Movies</h1>
+                        {% endif %}
+                        <p style="color: white">Welcome to movie application.</p>
+                        <p><a class="btn btn-primary btn-lg" href="{{ url_for('user_bp.login') }}" role="button">Login
+                            Now!</a></p>
+                    {% else %}
+                        {% if genre=='All' %}
+                            <h1 style="color: white">All Movies</h1>
+                        {% else %}
+                            <h1 style="color: white">{{ genre.genre_name }} Movies</h1>
+                        {% endif %}
+                        <p style="color: white">Hello, {{ user.username }}</p>
+                    {% endif %}
+                    <ul class="nav nav-pills">
+                        {% if genre=='All' %}
+                            <li role="presentation" class="active"><a href="#">All</a></li>
+                            {% for g in all_genre %}
+                                <li role="presentation"><a
+                                        href="{{ url_for('movie_bp.movies',genre=g.genre_name) }}">{{ g.genre_name }}</a>
+                                </li>
+
+                            {% endfor %}
+                        {% else %}
+                            <li role="presentation"><a href="{{ url_for('movie_bp.movies',genre='All') }}">All</a></li>
+                            {% for g in all_genre %}
+                                {% if genre.genre_name==g.genre_name %}
+                                    <li role="presentation" class="active"><a
+                                            href="{{ url_for('movie_bp.movies',genre=g.genre_name) }}">{{ g.genre_name }}</a>
+                                    </li>
+                                {% else %}
+                                    <li role="presentation"><a
+                                            href="{{ url_for('movie_bp.movies',genre=g.genre_name) }}">{{ g.genre_name }}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+
+
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            {% for m in movies %}
+                <div class="col-md-3">
+                    <div class="thumbnail" style="width: 300px; height: 400px">
+                        <img src="static/img/universal.jpg" alt="...">
+                        <div class="caption">
+                            <h3>{{ m.title }}</h3>
+                            <p>{{ m.release_year }}</p>
+                            <p><a href="{{ url_for('movie_bp.movies_detail',movietitle=m.title) }}"
+                                  class="btn btn-primary" role="button">Details</a>
+                                {% if user!=None %}
+                                    {% if m not in user.watched_movies %}
+                                        <a href="{{ url_for('watchlist_bp.add_to_watch_list',title=m.title) }}" class="btn btn-default" role="button">Add To Watchlist</a>
+                                    {% endif %}
+                                {% else %}
+                                    <p>
+                                        Login in first and add it to the watch list!
+                                    </p>
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

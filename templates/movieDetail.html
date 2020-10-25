@@ -1,0 +1,121 @@
+{% extends'index.html' %}
+{% block CONTAINER %}
+    <div class="container" style="width: 100%">
+        <div class="row">
+            <div class="jumbotron" style="width: 100%;background-image:url('static/img/back.jpg')">
+                <div class="container">
+                    {% if user==None %}
+                        <h1 style="color: white">Hello!</h1>
+                        <p style="color: white">Welcome to movie application.</p>
+                        <p><a class="btn btn-primary btn-lg" href="{{ url_for('user_bp.login') }}" role="button">Login
+                            Now!</a></p>
+                    {% else %}
+                        <h1 style="color: white">Hello, {{ user.username }}!</h1>
+                        <p style="color: white">All Movies</p>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="panel">
+                <div class="media">
+                    <div class="media-left">
+                        <a href="#">
+                            <img class="media-object" src="static/img/universal.jpg"
+                                 style="width: 300px; height: 500px">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <div class="page-header">
+                            <h1 style="color:#02032d">{{ movie.title }} <small>{{ movie.release_year }}</small></h1>
+                        </div>
+                        <blockquote>
+                            <p><b style="color:#02032d">Director: </b>{{ movie.director.director_full_name }}</p>
+                            <p><b style="color:#02032d">Actors: </b>
+                                {% for a in movie.actors %}
+                                    <a href="{{ url_for('actor_bp.actor_detail',actortitle=a.actor_full_name) }}">{{ a.actor_full_name }}</a>
+                                    /
+
+                                {% endfor %}</p>
+                            <p><b style="color:#02032d">Genres: </b>
+                                {% for a in movie.genres %}
+                                    <a href="{{ url_for('movie_bp.movies',genre=a.genre_name) }}">{{ a.genre_name }}</a>
+                                    /
+
+                                {% endfor %}</p>
+
+                            <p><b style="color:#02032d">Runtime: </b>{{ movie.runtime_minutes }} Minutes</p>
+                            <p></p>
+                            <footer>{{ movie.description }}</footer>
+                        </blockquote>
+                        <br>
+                        {% if user != None and movie not in user.watched_movies%}
+                            <a href="{{ url_for("watchlist_bp.add_to_watch_list_return_detail",title=movie.title) }}"
+                               class="btn btn-primary" type="button">Add To WatchList</a>
+                            <br>
+                        {% endif %}
+                        <p><b style="color:#02032d; font-size: large">Review</b>
+                            {% if user!=None%}
+                                <div class="panel-default" style="background: lightgrey;width: 60%">
+                                    <div class="panel-body">
+                                        <form method="post">
+                                            <div class="form-group" style="width:80%">
+                                        <textarea class="form-control" rows="3" value="Your Review"
+                                                  name="review"></textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="rating" class="col-sm-3 control-label">Rating</label>
+                                                <select id='rating' class="form-control" style="width:100px"
+                                                        name="rating">
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                    <option value="6">6</option>
+                                                    <option value="7">7</option>
+                                                    <option value="8">8</option>
+                                                    <option value="9">9</option>
+                                                    <option value="10">10</option>
+                                                </select>
+                                                <button class="btn btn-primary" type="submit">Upload</button>
+
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div class="alert alert-info">
+                                    If you want to post a comment, log in first!
+                                </div>
+                            {% endif %}
+                        {% for r in reviews %}
+                            <hr>
+                            <media>
+                                <div class="media-left">
+                                    <img class="media-object" class="img-circle"
+                                         src="{{ r.user.profile_pic }}"
+                                         style="width: 100px">
+                                </div>
+                                <div class="media-body">
+                                    <div class="media-heading">
+                                        {{ r.user.username }} <span class="badge">{{ r.rating }}</span>
+                                    </div>
+                                    {{ r.review_text }}
+                                    <br>
+                                    <br>
+                                    <code>{{ r.timestamp }}</code>
+
+                                </div>
+                            </media>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}
